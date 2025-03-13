@@ -15,7 +15,7 @@ Visit http://localhost:5173/.
 
 ### Track List
 
-See `src/data/albums.js`.
+See [src/data/albums.js](src/data/albums.js).
 
 Run `node public/generateAlbums.js` to generate track list.
 
