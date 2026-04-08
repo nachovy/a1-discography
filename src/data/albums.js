@@ -1,4 +1,4 @@
-const albums = [
+const albums_raw = [
   {
     "id": 1,
     "title": "Here We Come",
@@ -355,7 +355,7 @@ const albums = [
     ]
   }
 ];
-const singles = [
+const singles_raw = [
   {
     "id": 1,
     "title": "Be the First to Believe",
@@ -1089,7 +1089,7 @@ const singles = [
     ]
   }
 ];
-const otherTracks = [
+const otherTracks_raw = [
   {
     "title": "Summertime of Our Lives (Pump Friction & Precious Club Mix)",
     "src": "/music/other tracks/01 Summertime of Our Lives (Pump Friction & Precious Club Mix).mp3",
@@ -1197,4 +1197,22 @@ const otherTracks = [
   }
 ];
 
-export { albums, singles, otherTracks };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function prefixPaths(obj) {
+  if (Array.isArray(obj)) return obj.map(prefixPaths);
+  if (obj && typeof obj === 'object') {
+    return Object.fromEntries(
+      Object.entries(obj).map(([k, v]) =>
+        ['src', 'cover', 'lyrics'].includes(k) && typeof v === 'string'
+          ? [k, base + v]
+          : [k, prefixPaths(v)]
+      )
+    );
+  }
+  return obj;
+}
+
+export const albums = prefixPaths(albums_raw);
+export const singles = prefixPaths(singles_raw);
+export const otherTracks = prefixPaths(otherTracks_raw);
